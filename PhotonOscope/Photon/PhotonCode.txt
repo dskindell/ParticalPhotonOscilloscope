@@ -19,6 +19,7 @@ void setup() {
     IPAddress myIp = WiFi.localIP();
     sprintf(myIpAddress, "%d.%d.%d.%d", myIp[0], myIp[1], myIp[2], myIp[3]);
     Particle.publish("IP",myIpAddress);
+    Particle.variable("IP",myIpAddress);
     delay(1000);
 
     server.begin();
