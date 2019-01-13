@@ -25,25 +25,25 @@ void setup() {
 }
 
 void loop() {
-    
+
     unsigned long startMSTS = micros();
     for(int i = 0; i < arraySize(dataArray); i += 1)
     {
         dataArray[i] = analogRead(ANALOGPIN);
         TSArray[i] = micros() - startMSTS;
     }
-    
+
     //Check to see if the micros() overflowed during the sample. If so, try again
     if (TSArray[0] > TSArray[arraySize(dataArray)-1]){
         return;
     }
-    
+
     processStats();
     normalizeDataToAverage();
-   
+
     if (!processOffsetCrossings())
     {
-        //A clean signal has not been found. 
+        //A clean signal has not been found.
         Particle.publish("Signal","Unknown");
         offsetCrossingIndexs[0] = 0;
         offsetCrossings[0] = TSArray[0];
@@ -80,7 +80,7 @@ void loop() {
     delay(sampleDelay);
 }
 
-void write_socket(TCPClient socket, int16_t *buffer) 
+void write_socket(TCPClient socket, int16_t *buffer)
 {
     int tcpIdx = 0;
     uint8_t tcpBuffer[BUFFER_SIZE*2];
@@ -151,7 +151,7 @@ bool processOffsetCrossings()
         if (crossingIndex > 1){
             fullCycle = true;
             break;
-        }   
+        }
         if (!crossSet && dataArray[i] > triggerValue){
             crossSet = true;
         }
